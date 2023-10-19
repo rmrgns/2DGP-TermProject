@@ -1,7 +1,7 @@
 from pico2d import load_image
 from sdl2 import SDL_KEYUP, SDL_KEYDOWN, SDLK_RIGHT, SDLK_LEFT, SDLK_SPACE
 
-
+window_width = 1600
 def right_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT
 
@@ -41,6 +41,13 @@ class Character:
 
     def draw(self):
         self.state_machine.draw()
+
+    def dash(self):
+        self.x += self.dir * 200
+        if self.x < 10:
+            self.x = 10
+        elif self.x > window_width:
+            self.x = window_width
 
 class StateMachine:
     def __init__(self, character):
@@ -106,12 +113,18 @@ class Run:
 
     @staticmethod
     def exit(character, e):
+        if space_down(e):
+            character.dash()
         pass
 
     @staticmethod
     def do(character):
         # character.frame = (character.frame + 1) % 8
         character.x += character.dir * 5
+        if character.x < 10:
+            character.x = 10
+        elif character.x > window_width:
+            character.x = window_width
         pass
 
     @staticmethod
