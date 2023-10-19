@@ -12,3 +12,7 @@ class MouseControl:
 
     def update(self):
         pass
+
+
+    def shot(self):
+        print('shot')

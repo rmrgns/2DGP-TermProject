@@ -19,6 +19,8 @@ def handle_events():
             running = False
         elif event.type == SDL_MOUSEMOTION:
             mouse.x, mouse.y = event.x, window_height - 1 - event.y
+        elif event.type == SDL_MOUSEBUTTONDOWN:
+            mouse.shot()
         else:
             character.handle_event(event)
 
