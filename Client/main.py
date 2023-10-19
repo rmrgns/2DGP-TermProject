@@ -18,7 +18,6 @@ def handle_events():
             running = False
         else:
             character.handle_event(event)
-            pass
 
 def create_world():
     global running
