@@ -1,6 +1,7 @@
 from pico2d import *
 
 import game_world
+import game_framework
 from background import Background
 from character import Character
 from ingameUI import InGameUI
@@ -9,14 +10,12 @@ from mousecontrol import MouseControl
 window_width = 1600
 window_height = 900
 def handle_events():
-    global running
-    global mouse
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
-            running = False
+            game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            running = False
+            game_framework.quit()
         elif event.type == SDL_MOUSEMOTION:
             mouse.x, mouse.y = event.x, window_height - 1 - event.y
         elif event.type == SDL_MOUSEBUTTONDOWN:
@@ -25,11 +24,10 @@ def handle_events():
             character.handle_event(event)
 
 def init():
-    global running
+
     global background
     global character
     global mouse
-    running = True
 
     background = Background(window_width//2, window_height//2)
     game_world.add_object(background)
@@ -44,6 +42,7 @@ def init():
     game_world.add_object(mouse, 2)
 
 def finish():
+    game_world.clear()
     pass
 
 def update():
