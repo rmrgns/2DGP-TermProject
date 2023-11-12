@@ -1,7 +1,11 @@
+import random
+
 from pico2d import *
 
 import game_world
 import game_framework
+from clay import Clay
+from spawn import Spawn
 from background import Background
 from character import Character
 from ingameUI import InGameUI
@@ -41,6 +45,9 @@ def init():
     mouse = MouseControl()
     game_world.add_object(mouse, 2)
 
+    x = random.randint(1200, 1500)
+    spawn = Spawn(x)
+    game_world.add_object(spawn, 2)
 def finish():
     game_world.clear()
     pass
