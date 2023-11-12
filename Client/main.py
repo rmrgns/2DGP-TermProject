@@ -5,7 +5,7 @@ import game_framework
 window_width = 1600
 window_height = 900
 
-pico2d.open_canvas(window_width, window_height)
+pico2d.open_canvas(window_width, window_height, sync=True)
 pico2d.hide_cursor()
 game_framework.run(start_mode)
 #
