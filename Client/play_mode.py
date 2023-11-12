@@ -29,7 +29,7 @@ def init():
     global character
     global mouse
 
-    background = Background(window_width//2, window_height//2)
+    background = Background(window_width//2, window_height//2 + 100)
     game_world.add_object(background)
 
     character = Character()
