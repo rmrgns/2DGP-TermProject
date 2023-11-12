@@ -1,7 +1,9 @@
 from pico2d import load_image
-from sdl2 import SDL_KEYUP, SDL_KEYDOWN, SDLK_RIGHT, SDLK_LEFT, SDLK_SPACE, SDLK_a, SDLK_d
+from sdl2 import SDL_KEYUP, SDL_KEYDOWN, SDLK_RIGHT, SDLK_LEFT, SDLK_SPACE, SDLK_a, SDLK_d, SDL_MOUSEBUTTONDOWN
 
 import game_framework
+import game_world
+from bullet import Bullet
 
 window_width = 1600
 PIXEL_PER_METER = (1600.0 / 15.0) # 10 pixel 30 cm
@@ -32,12 +34,15 @@ def left_up(e):
 def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
 
+def shot(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_MOUSEBUTTONDOWN
+
 ##
 animation_names = ['1']
 
 class Character:
     def __init__(self):
-        self.x, self.y = 800,250
+        self.x, self.y = 800,270
         self.frame = 0
         self.action = 0
         self.dir = 0
@@ -64,6 +69,10 @@ class Character:
             self.x = 10
         elif self.x > window_width:
             self.x = window_width
+
+    def fire(self):
+        bullet = Bullet(self.x, self.y, self.face_dir)
+        game_world.add_object(bullet)
 
 class StateMachine:
     def __init__(self, character):
