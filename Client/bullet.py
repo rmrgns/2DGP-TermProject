@@ -5,7 +5,11 @@ import game_world
 import play_mode
 import game_framework
 
-
+PIXEL_PER_METER = (1600.0 / 15.0) # 10 pixel 30 cm
+BULLET_SPEED_KMPH = 100.0 # Km / Hour
+BULLET_SPEED_MPM = (BULLET_SPEED_KMPH * 1000.0 / 60.0)
+BULLET_SPEED_MPS = (BULLET_SPEED_MPM / 60.0)
+BULLET_SPEED_PPS = (BULLET_SPEED_MPS * PIXEL_PER_METER)
 class Bullet:
     image = None
 
@@ -22,8 +26,8 @@ class Bullet:
         self.image.composite_draw(self.rad, '', self.x, self.y, 100, 100)
 
     def update(self):
-        self.x += self.ratio * 1000 * game_framework.frame_time * self.dir
-        self.y += (1-self.ratio) * 1000 * game_framework.frame_time
+        self.x += self.ratio * BULLET_SPEED_PPS * game_framework.frame_time * self.dir
+        self.y += (1-self.ratio) * BULLET_SPEED_PPS * game_framework.frame_time
         if self.x < 10 or self.x > 1600 - 10:
             game_world.remove_object(self)
 

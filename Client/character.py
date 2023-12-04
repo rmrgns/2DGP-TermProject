@@ -64,6 +64,8 @@ class Character:
             self.face_dir = -1
         else:
             self.face_dir = 1
+        if self.fire_count == 0:
+            self.fire_count = 2
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
