@@ -132,8 +132,10 @@ class Idle:
 
     @staticmethod
     def draw(character):
-        character.image['1'][int(character.frame)].clip_draw(0, 0, character.size_x, character.size_y, character.x, character.y)
-
+        if character.face_dir == -1:
+            character.image['1'][int(character.frame)].composite_draw(0, 'h', character.x, character.y, character.size_x, character.size_y, )
+        else:
+            character.image['1'][int(character.frame)].draw(character.x, character.y, character.size_x, character.size_y)
 
 class Run:
 
@@ -162,4 +164,9 @@ class Run:
 
     @staticmethod
     def draw(character):
-        character.image['1'][int(character.frame)].clip_draw(0, 0, character.size_x, character.size_y, character.x, character.y)
+        if character.face_dir == -1:
+            character.image['1'][int(character.frame)].composite_draw(0, 'h', character.x, character.y,
+                                                                      character.size_x, character.size_y, )
+        else:
+            character.image['1'][int(character.frame)].draw(character.x, character.y, character.size_x,
+                                                            character.size_y)
