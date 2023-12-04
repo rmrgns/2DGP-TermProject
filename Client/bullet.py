@@ -9,28 +9,24 @@ import game_framework
 class Bullet:
     image = None
 
-    def __init__(self, x = 400, y = 300, ratio = 0 ,dir = 1):
+    def __init__(self, x = 400, y = 300, ratio = 0 ,dir = 1, idx = 0):
         if Bullet.image == None:
             Bullet.image = load_image('Resource\\bullet-1.png')
         self.x, self.y = x, y
         self.ratio = ratio
         self.dir = dir
         self.rad = self.calculate_rad()
+        self.inx = idx
 
     def draw(self):
         self.image.composite_draw(self.rad, '', self.x, self.y, 100, 100)
 
     def update(self):
-        # self.x += (self.velocity_x - self.shot_x) // 100
-        # self.y += (self.velocity_y -self.shot_y) // 100
         self.x += self.ratio * 1000 * game_framework.frame_time * self.dir
         self.y += (1-self.ratio) * 1000 * game_framework.frame_time
         if self.x < 10 or self.x > 1600 - 10:
             game_world.remove_object(self)
 
-    # x^2 + y^2 = spd^2
-    # y = 4/3 * x
-    # cal(x) = spd^2
     def calculate_rad(self):
         delta_y = play_mode.mouse.y - self.y
         delta_x = play_mode.mouse.x - self.x

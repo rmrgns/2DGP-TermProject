@@ -49,6 +49,8 @@ class Character:
         self.dir = 0
         self.face_dir = 1
         self.size_x, self.size_y = 80, 134
+        self.bullet_spread = 0.02
+        self.bullet_count = 10
         self.image = {}
         for name in animation_names:
             self.image[name] = [load_image("Resource\\png1\\Run\\" + name + "-%d" % i + ".png") for i in range(1, 8)]
@@ -77,10 +79,10 @@ class Character:
 
     def fire(self):
         if play_mode.mouse.y > self.y:
-            ratio = abs(play_mode.mouse.x-self.x) / (abs(play_mode.mouse.x-self.x) + (play_mode.mouse.y-self.y))
-            #print(ratio)
-            bullet = Bullet(self.x, self.y, ratio, self.face_dir)
-            game_world.add_object(bullet)
+            for i in range(0,self.bullet_count):
+                ratio = abs(play_mode.mouse.x-self.x) / (abs(play_mode.mouse.x-self.x) + (play_mode.mouse.y-self.y))
+                bullet = Bullet(self.x, self.y, ratio + self.bullet_spread * i - (self.bullet_spread * (self.bullet_count / 2)), self.face_dir, i)
+                game_world.add_object(bullet)
 
 class StateMachine:
     def __init__(self, character):
