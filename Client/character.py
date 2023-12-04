@@ -50,7 +50,8 @@ class Character:
         self.face_dir = 1
         self.size_x, self.size_y = 80, 134
         self.bullet_spread = 0.02
-        self.bullet_count = 10
+        self.bullet_shotcount = 10
+        self.bullet_count = 2
         self.image = {}
         for name in animation_names:
             self.image[name] = [load_image("Resource\\png1\\Run\\" + name + "-%d" % i + ".png") for i in range(1, 8)]
@@ -79,9 +80,9 @@ class Character:
 
     def fire(self):
         if play_mode.mouse.y > self.y:
-            for i in range(0,self.bullet_count):
+            for i in range(0, self.bullet_shotcount):
                 ratio = abs(play_mode.mouse.x-self.x) / (abs(play_mode.mouse.x-self.x) + (play_mode.mouse.y-self.y))
-                bullet = Bullet(self.x, self.y, ratio + self.bullet_spread * i - (self.bullet_spread * (self.bullet_count / 2)), self.face_dir, i)
+                bullet = Bullet(self.x, self.y, ratio + self.bullet_spread * i - (self.bullet_spread * (self.bullet_shotcount / 2)), self.face_dir, i)
                 game_world.add_object(bullet)
                 game_world.add_collision_pair('bullet:clay', bullet, None)
 

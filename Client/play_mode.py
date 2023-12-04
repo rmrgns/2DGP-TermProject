@@ -2,6 +2,7 @@ from pico2d import *
 
 import game_world
 import game_framework
+from bullet_count import BulletCount
 from background import Background
 from character import Character
 from ingameUI import InGameUI
@@ -40,6 +41,10 @@ def init():
 
     mouse = MouseControl()
     game_world.add_object(mouse, 2)
+
+    for i in range(2):
+        bulletcountUI = BulletCount(i, 750 + 150*i, 100)
+        game_world.add_object(bulletcountUI, 1)
 
 def finish():
     game_world.clear()
