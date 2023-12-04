@@ -78,7 +78,7 @@ class Character:
     def fire(self):
         if play_mode.mouse.y > self.y:
             ratio = abs(play_mode.mouse.x-self.x) / (abs(play_mode.mouse.x-self.x) + (play_mode.mouse.y-self.y))
-            print(ratio)
+            #print(ratio)
             bullet = Bullet(self.x, self.y, ratio, self.face_dir)
             game_world.add_object(bullet)
 

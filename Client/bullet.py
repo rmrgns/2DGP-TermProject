@@ -1,3 +1,5 @@
+import math
+
 from pico2d import load_image
 import game_world
 import play_mode
@@ -13,13 +15,10 @@ class Bullet:
         self.x, self.y = x, y
         self.ratio = ratio
         self.dir = dir
-        self.shot_x, self.shot_y = x, y
-        self.velocity_x = play_mode.mouse.x
-        self.velocity_y = play_mode.mouse.y
-
+        self.rad = self.calculate_rad()
 
     def draw(self):
-        self.image.draw(self.x, self.y, 100, 100)
+        self.image.composite_draw(self.rad, '', self.x, self.y, 100, 100)
 
     def update(self):
         # self.x += (self.velocity_x - self.shot_x) // 100
@@ -32,3 +31,11 @@ class Bullet:
     # x^2 + y^2 = spd^2
     # y = 4/3 * x
     # cal(x) = spd^2
+    def calculate_rad(self):
+        delta_y = play_mode.mouse.y - self.y
+        delta_x = play_mode.mouse.x - self.x
+
+        # 아크탄젠트를 사용하여 기울기(라디안) 계산
+        slope_rad = math.atan2(delta_y, delta_x)
+
+        return slope_rad
