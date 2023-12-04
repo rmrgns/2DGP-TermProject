@@ -35,3 +35,10 @@ class Bullet:
         slope_rad = math.atan2(delta_y, delta_x)
 
         return slope_rad
+
+    def handle_collision(self, group, other):
+        if group == 'bullet:clay':
+            pass
+
+    def get_bb(self):
+        return self.x, self.y, self.x, self.y

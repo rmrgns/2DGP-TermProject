@@ -83,6 +83,7 @@ class Character:
                 ratio = abs(play_mode.mouse.x-self.x) / (abs(play_mode.mouse.x-self.x) + (play_mode.mouse.y-self.y))
                 bullet = Bullet(self.x, self.y, ratio + self.bullet_spread * i - (self.bullet_spread * (self.bullet_count / 2)), self.face_dir, i)
                 game_world.add_object(bullet)
+                game_world.add_collision_pair('bullet:clay', bullet, None)
 
 class StateMachine:
     def __init__(self, character):
