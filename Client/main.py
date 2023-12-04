@@ -1,5 +1,7 @@
 import pico2d
 import play_mode as start_mode
+# import title_mode as start_mode
+# import logo_mode as start_mode
 import game_framework
 
 window_width = 1600
