@@ -57,6 +57,10 @@ class Character:
         self.state_machine.start()
     def update(self):
         self.state_machine.update()
+        if self.x > play_mode.mouse.x:
+            self.face_dir = -1
+        else:
+            self.face_dir = 1
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
@@ -72,10 +76,11 @@ class Character:
             self.x = window_width
 
     def fire(self):
-        ratio = (play_mode.mouse.x-self.x) / ((play_mode.mouse.x-self.x) + (play_mode.mouse.y-self.y))
-        print(ratio)
-        bullet = Bullet(self.x, self.y, ratio, self.face_dir)
-        game_world.add_object(bullet)
+        if play_mode.mouse.y > self.y:
+            ratio = abs(play_mode.mouse.x-self.x) / (abs(play_mode.mouse.x-self.x) + (play_mode.mouse.y-self.y))
+            print(ratio)
+            bullet = Bullet(self.x, self.y, ratio, self.face_dir)
+            game_world.add_object(bullet)
 
 class StateMachine:
     def __init__(self, character):
@@ -135,9 +140,9 @@ class Run:
     @staticmethod
     def enter(character, e):
         if right_down(e) or left_up(e): # 오른쪽으로 RUN
-            character.dir, character.face_dir, character.action = 1, 1, 1
+            character.dir, character.action = 1, 1
         elif left_down(e) or right_up(e): # 왼쪽으로 RUN
-            character.dir, character.face_dir, character.action = -1, -1, 0
+            character.dir, character.action = -1, 0
 
     @staticmethod
     def exit(character, e):

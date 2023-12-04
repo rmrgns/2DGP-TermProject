@@ -12,6 +12,7 @@ class Bullet:
             Bullet.image = load_image('Resource\\bullet-1.png')
         self.x, self.y = x, y
         self.ratio = ratio
+        self.dir = dir
         self.shot_x, self.shot_y = x, y
         self.velocity_x = play_mode.mouse.x
         self.velocity_y = play_mode.mouse.y
@@ -23,8 +24,8 @@ class Bullet:
     def update(self):
         # self.x += (self.velocity_x - self.shot_x) // 100
         # self.y += (self.velocity_y -self.shot_y) // 100
-        self.x = self.x + self.ratio * 1000 * game_framework.frame_time
-        self.y = self.y + (1-self.ratio) * 1000 * game_framework.frame_time
+        self.x += self.ratio * 1000 * game_framework.frame_time * self.dir
+        self.y += (1-self.ratio) * 1000 * game_framework.frame_time
         if self.x < 10 or self.x > 1600 - 10:
             game_world.remove_object(self)
 
