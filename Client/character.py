@@ -4,6 +4,7 @@ from sdl2 import SDL_KEYUP, SDL_KEYDOWN, SDLK_RIGHT, SDLK_LEFT, SDLK_SPACE, SDLK
 import game_framework
 import game_world
 from bullet import Bullet
+import play_mode
 
 window_width = 1600
 PIXEL_PER_METER = (1600.0 / 15.0) # 10 pixel 30 cm
@@ -71,7 +72,9 @@ class Character:
             self.x = window_width
 
     def fire(self):
-        bullet = Bullet(self.x, self.y, self.face_dir)
+        ratio = (play_mode.mouse.x-self.x) / ((play_mode.mouse.x-self.x) + (play_mode.mouse.y-self.y))
+        print(ratio)
+        bullet = Bullet(self.x, self.y, ratio, self.face_dir)
         game_world.add_object(bullet)
 
 class StateMachine:
