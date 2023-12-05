@@ -4,6 +4,7 @@ from sdl2 import SDL_KEYUP, SDL_KEYDOWN, SDLK_RIGHT, SDLK_LEFT, SDLK_SPACE, SDLK
 import game_framework
 import game_world
 from bullet import Bullet
+import play_mode
 
 window_width = 1600
 PIXEL_PER_METER = (1600.0 / 15.0) # 10 pixel 30 cm
@@ -48,6 +49,9 @@ class Character:
         self.dir = 0
         self.face_dir = 1
         self.size_x, self.size_y = 80, 134
+        self.bullet_spread = 0.02
+        self.bullet_count = 10
+        self.fire_count = 2
         self.image = {}
         for name in animation_names:
             self.image[name] = [load_image("Resource\\png1\\Run\\" + name + "-%d" % i + ".png") for i in range(1, 8)]
@@ -56,6 +60,12 @@ class Character:
         self.state_machine.start()
     def update(self):
         self.state_machine.update()
+        if self.x > play_mode.mouse.x:
+            self.face_dir = -1
+        else:
+            self.face_dir = 1
+        if self.fire_count == 0:
+            self.fire_count = 2
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
@@ -71,8 +81,13 @@ class Character:
             self.x = window_width
 
     def fire(self):
-        bullet = Bullet(self.x, self.y, self.face_dir)
-        game_world.add_object(bullet)
+        if play_mode.mouse.y > self.y and self.fire_count > 0:
+            for i in range(0, self.bullet_count):
+                ratio = abs(play_mode.mouse.x-self.x) / (abs(play_mode.mouse.x-self.x) + (play_mode.mouse.y-self.y))
+                bullet = Bullet(self.x, self.y, ratio + self.bullet_spread * i - (self.bullet_spread * (self.bullet_count / 2)), self.face_dir, i)
+                game_world.add_object(bullet)
+                game_world.add_collision_pair('bullet:clay', bullet, None)
+            self.fire_count -= 1
 
 class StateMachine:
     def __init__(self, character):
@@ -124,17 +139,19 @@ class Idle:
 
     @staticmethod
     def draw(character):
-        character.image['1'][int(character.frame)].clip_draw(0, 0, character.size_x, character.size_y, character.x, character.y)
-
+        if character.face_dir == -1:
+            character.image['1'][int(character.frame)].composite_draw(0, 'h', character.x, character.y, character.size_x, character.size_y, )
+        else:
+            character.image['1'][int(character.frame)].draw(character.x, character.y, character.size_x, character.size_y)
 
 class Run:
 
     @staticmethod
     def enter(character, e):
         if right_down(e) or left_up(e): # 오른쪽으로 RUN
-            character.dir, character.face_dir, character.action = 1, 1, 1
+            character.dir, character.action = 1, 1
         elif left_down(e) or right_up(e): # 왼쪽으로 RUN
-            character.dir, character.face_dir, character.action = -1, -1, 0
+            character.dir, character.action = -1, 0
 
     @staticmethod
     def exit(character, e):
@@ -154,4 +171,9 @@ class Run:
 
     @staticmethod
     def draw(character):
-        character.image['1'][int(character.frame)].clip_draw(0, 0, character.size_x, character.size_y, character.x, character.y)
+        if character.face_dir == -1:
+            character.image['1'][int(character.frame)].composite_draw(0, 'h', character.x, character.y,
+                                                                      character.size_x, character.size_y, )
+        else:
+            character.image['1'][int(character.frame)].draw(character.x, character.y, character.size_x,
+                                                            character.size_y)
