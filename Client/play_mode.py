@@ -29,6 +29,8 @@ def handle_events():
             character.handle_event(event)
 
 def init():
+    global spawn_time
+    spawn_time = get_time()
 
     global background
     global character
@@ -62,6 +64,12 @@ def finish():
     pass
 
 def update():
+    global spawn_time
+    if get_time() - spawn_time > 5:
+        x = random.randint(1200, 1500)
+        spawn = Spawn(x)
+        game_world.add_object(spawn, 2)
+        spawn_time = get_time()
     game_world.update()
 
 

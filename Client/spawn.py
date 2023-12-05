@@ -18,9 +18,8 @@ class Spawn:
         pass
 
     def update(self):
-        if get_time() - self.time >= 30.0:
-            for clay in clays:
-                clay.delete_clay()
+        if get_time() - self.time >= 3.0:
+
             game_world.remove_object(self)
 
     def makeclay(self):
