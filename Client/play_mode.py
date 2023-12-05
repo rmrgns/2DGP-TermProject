@@ -32,6 +32,7 @@ def init():
     global background
     global character
     global mouse
+    global spawn
 
     background = Background(window_width//2, window_height//2 + 100)
     game_world.add_object(background)

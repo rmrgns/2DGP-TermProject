@@ -5,7 +5,7 @@ import play_mode
 class Clay:
     image = None
 
-    def __init__(self, x=400, y=300, dir=1):
+    def __init__(self, x=400, y=300):
         if Clay.image == None:
             Clay.image = load_image('Resource\\clay_coin.png')
         self.x, self.y = x, y
@@ -18,8 +18,8 @@ class Clay:
         self.image.draw(self.x, self.y, 100, 100)
 
     def update(self):
-        self.x += (self.velocity_x - self.shot_x) // 100
-        self.y += (self.velocity_y - self.shot_y) // 100
         if self.x < 10 or self.x > 1600 - 10:
             game_world.remove_object(self)
 
+    def delete_clay(self):
+        game_world.remove_object(self)

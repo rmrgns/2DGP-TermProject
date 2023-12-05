@@ -1,25 +1,31 @@
-from pico2d import load_image
+import random
+
+from pico2d import load_image, get_time
 import game_world
 import play_mode
+from clay import Clay
+
 
 class Spawn:
-    image = None
-
-    def __init__(self, x=400, y=300, dir=1):
-        if Spawn.image == None:
-            Spawn.image = load_image('Resource\\clay_coin.png')
-        self.x, self.y = x, y
-        self.shot_x, self.shot_y = x, y
+    def __init__(self, x=800):
+        self.x, self.y = x, 250
+        self.shot_x, self.shot_y = x, 250
         self.velocity_x = play_mode.mouse.x
         self.velocity_y = play_mode.mouse.y
-
-
+        self.time = get_time()
+        global clays
+        clays = [Clay(random.randint(x-100,x+100), self.y) for _ in range(20)]
+        game_world.add_objects(clays, 2)
     def draw(self):
-        self.image.draw(self.x, self.y, 100, 100)
+        pass
 
     def update(self):
-        self.x += (self.velocity_x - self.shot_x) // 100
-        self.y += (self.velocity_y - self.shot_y) // 100
-        if self.x < 10 or self.x > 1600 - 10:
+        if get_time() - self.time >= 30.0:
+            for clay in clays:
+                clay.delete_clay()
             game_world.remove_object(self)
 
+    def makeclay(self):
+        for n in range(1, 11):
+            clay = Clay()
+        pass
