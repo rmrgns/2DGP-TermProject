@@ -1,25 +1,41 @@
+import random
+
 from pico2d import load_image
 import game_world
 import play_mode
+import game_framework
+
 
 class Clay:
     image = None
-
-    def __init__(self, x=400, y=300):
+    imageCoin = None
+    imageSpaceShip = None
+    imageBomb = None
+    def __init__(self, x=400, y=300, dir = -1):
         if Clay.image == None:
             Clay.image = load_image('Resource\\clay_coin.png')
-        self.x, self.y = x, y
-        self.shot_x, self.shot_y = x, y
-        self.velocity_x = play_mode.mouse.x
-        self.velocity_y = play_mode.mouse.y
 
+        self.x, self.y = x, y
+        self.delete_line = y - 50
+        self.dir = dir
+        self.image_num = random.randint(0,5)
+        self.velocity_x = random.randint(100, 150)
+        self.velocity_y = random.randint(1000, 1500)
 
     def draw(self):
-        self.image.draw(self.x, self.y, 100, 100)
+        self.image.draw(self.x, self.y, 50, 50)
 
     def update(self):
-        if self.x < 10 or self.x > 1600 - 10:
+        if self.y < self.delete_line:
             game_world.remove_object(self)
+
+        self.x += self.velocity_x * game_framework.frame_time * self.dir
+        self.y += self.velocity_y * game_framework.frame_time
+        self.calculate_velocity()
+
+
+    def calculate_velocity(self):
+        self.velocity_y -= 10
 
     def delete_clay(self):
         game_world.remove_object(self)

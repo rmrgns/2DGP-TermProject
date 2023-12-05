@@ -2,9 +2,10 @@ from pico2d import load_image
 
 
 class MouseControl:
+    image = None
     def __init__(self):
-        self.image = load_image('Resource\\MouseIcon.png')
-
+        if MouseControl.image == None:
+            self.image = load_image('Resource\\MouseIcon.png')
         self.x, self.y = 100,100
 
     def draw(self):
@@ -15,4 +16,5 @@ class MouseControl:
 
 
     def shot(self):
-        print('shot')
+        # print('shot')
+        pass

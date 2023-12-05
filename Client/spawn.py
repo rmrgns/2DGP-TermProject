@@ -9,12 +9,10 @@ from clay import Clay
 class Spawn:
     def __init__(self, x=800):
         self.x, self.y = x, 250
-        self.shot_x, self.shot_y = x, 250
-        self.velocity_x = play_mode.mouse.x
-        self.velocity_y = play_mode.mouse.y
         self.time = get_time()
+        self.clay_count = 20
         global clays
-        clays = [Clay(random.randint(x-100,x+100), self.y) for _ in range(20)]
+        clays = [Clay(random.randint(x-100,x+100), self.y) for _ in range(self.clay_count)]
         game_world.add_objects(clays, 2)
     def draw(self):
         pass
@@ -26,6 +24,6 @@ class Spawn:
             game_world.remove_object(self)
 
     def makeclay(self):
-        for n in range(1, 11):
+        for n in range(0, self.clay_count):
             clay = Clay()
         pass
